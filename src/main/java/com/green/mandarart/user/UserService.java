@@ -1,6 +1,10 @@
 package com.green.mandarart.user;
 
 import com.green.mandarart.common.MyFileUtils;
+import com.green.mandarart.user.duplicate.DuplicateMapper;
+import com.green.mandarart.user.duplicate.DuplicateService;
+import com.green.mandarart.user.duplicate.model.DuplicateReq;
+import com.green.mandarart.user.duplicate.model.DuplicateRes;
 import com.green.mandarart.user.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +21,8 @@ import java.io.IOException;
 public class UserService {
     private final UserMapper userMapper;
     private final MyFileUtils myFileUtils;
+    private final DuplicateMapper duplicateMapper;
+    private final DuplicateService duplicateService;
 
     //회원가입
     public int postSignUp(MultipartFile pic, UserSignUpReq p){
@@ -68,22 +74,36 @@ public class UserService {
     public int putUser(UserUpdateReq p){
         // 이메일, 비밀번호 일치 여부 확인
         UserSignInRes res = new UserSignInRes();
+        UserUpdateRes userUpdateRes = new UserUpdateRes();
+
         if(p.getUserId() != res.getUserId()){
-            UserUpdateRes userUpdateRes = new UserUpdateRes();
             userUpdateRes.setMessage("이메일이 일치하지않습니다.");
             return 0;
         }
 
         if(!BCrypt.checkpw(p.getUpw(), res.getUpw())){
-            UserUpdateRes userUpdateRes = new UserUpdateRes();
             userUpdateRes.setMessage("비밀번호가 일치하지않습니다.");
             return 0;
         }
 
-        if(p.getUpw() != p.getNewUpw()) {
-            UserUpdateRes userUpdateRes = new UserUpdateRes();
-            userUpdateRes.setMessage("비밀번호를 다시 입력해주십시오.");
-            return 0;
+        // 비밀번호 바꿀시
+        if(p.getNewUpw() != null) {
+            if (p.getNewUpw() != p.getCheckUpw()) {
+                userUpdateRes.setMessage("비밀번호를 다시 입력해주십시오.");
+                return 0;
+            }
+            String hashedPassWord = BCrypt.hashpw(p.getNewUpw(), BCrypt.gensalt());
+            p.setNewUpw(hashedPassWord);
+        }
+
+        // 닉네임 바꿀시
+        if(p.getNickName() != null) {
+            DuplicateReq duplicateReq = new DuplicateReq();
+            DuplicateRes duplicateRes = duplicateService.checkNickName(duplicateReq);
+            if(duplicateRes != null){
+                userUpdateRes.setMessage("중복된 닉네임입니다.");
+                return 0;
+            }
         }
 
         // 저장할 파일명(랜덤명 파일명) 생성
@@ -113,7 +133,6 @@ public class UserService {
         // DB에 튜플을 수정(Update)
         int result = userMapper.updUser(p);
 
-        UserUpdateRes userUpdateRes = new UserUpdateRes();
         userUpdateRes.setMessage("회원수정이 완료되었습니다.");
         return result;
 
