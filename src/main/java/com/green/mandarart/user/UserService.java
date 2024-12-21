@@ -21,7 +21,6 @@ import java.io.IOException;
 public class UserService {
     private final UserMapper userMapper;
     private final MyFileUtils myFileUtils;
-    private final DuplicateMapper duplicateMapper;
     private final DuplicateService duplicateService;
 
     //회원가입
@@ -135,6 +134,30 @@ public class UserService {
 
         userUpdateRes.setMessage("회원수정이 완료되었습니다.");
         return result;
+    }
 
+    //회원삭제
+    public int deleteUser(UserDeleteReq p){
+        UserSignInReq req = new UserSignInReq();
+        UserSignInRes res = userMapper.selUser(req);
+        UserDeleteRes userDeleteRes = new UserDeleteRes();
+        if(res == null || !BCrypt.checkpw(p.getUpw(), res.getUpw())){
+            userDeleteRes.setMessage("아이디 혹은 비밀번호를 확인해 주십시오.");
+            return 0;
+        }
+
+        int deleteLikeComment = userMapper.delProjectLikeAndProjectComment(p);
+        log.info("deleteLikeComment: {}", deleteLikeComment);
+        int deleteSharedProject = userMapper.delSharedProject(p);
+        log.info("deleteSharedProject: {}", deleteSharedProject);
+        int deleteMandalart = userMapper.delMandalart(p);
+        log.info("deleteMandalart: {}", deleteMandalart);
+        int deleteProject = userMapper.delProject(p);
+        log.info("deleteProject: {}", deleteProject);
+        int deleteUser = userMapper.delUser(p);
+        log.info("deleteUser: {}", deleteUser);
+
+        userDeleteRes.setMessage("회원삭제가 완료되었습니다.");
+        return deleteUser;
     }
 }

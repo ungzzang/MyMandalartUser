@@ -47,4 +47,36 @@
         WHERE user_id = #{userId}
     </update>
 
+
+    <delete id="delProjectLikeAndProjectComment">
+        DELETE B, C
+        FROM shared_project A
+        LEFT JOIN shared_project_like B
+        ON A.project_id = B.project_id
+        LEFT JOIN shared_project_comment C
+        ON A.project_id = C.project_id
+        WHERE A.project_id = #{projectId}
+    </delete>
+
+    <delete id="delSharedProject">
+        DELETE FROM shared_project A
+        WHERE project_id = #{projectId}
+    </delete>
+
+    <delete id="delMandalart">
+        DELETE FROM mandalart A
+        WHERE project_id = #{projectId}
+    </delete>
+
+    <delete id="delProject">
+        DELETE FROM project A
+        WHERE project_id = #{projectId}
+        AND user_id
+    </delete>
+
+    <delete id="delUser">
+        DELETE FROM user
+        WHERE user_id = #{userId}
+    </delete>
+
 </mapper>

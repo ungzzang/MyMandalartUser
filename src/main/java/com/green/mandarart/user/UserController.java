@@ -70,4 +70,15 @@ public class UserController {
                 .build();
     }
 
+    @DeleteMapping
+    @Operation(summary = "회원탈퇴")
+    public ResultResponse<Integer> deleteUser(@RequestBody UserDeleteReq p) {
+        int result = userService.deleteUser(p);
+        UserDeleteRes res = new UserDeleteRes();
+        return ResultResponse.<Integer>builder()
+                .resultCode(result == 1 ? 200 : 400)
+                .resultMessage(res.getMessage())
+                .build();
+    }
+
 }

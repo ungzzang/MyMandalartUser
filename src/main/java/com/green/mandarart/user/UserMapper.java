@@ -9,4 +9,10 @@ public interface UserMapper {
     UserSignInRes selUser(UserSignInReq p);
     UserInfoGetRes selUserInfo(UserInfoGetReq p);
     int updUser(UserUpdateReq p);
+
+    int delProjectLikeAndProjectComment(UserDeleteReq p);
+    int delSharedProject(UserDeleteReq p);
+    int delMandalart(UserDeleteReq p);
+    int delProject(UserDeleteReq p);
+    int delUser(UserDeleteReq p);
 }
