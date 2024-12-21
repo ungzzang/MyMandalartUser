@@ -72,7 +72,7 @@ public class UserController {
 
     @DeleteMapping
     @Operation(summary = "회원탈퇴")
-    public ResultResponse<Integer> deleteUser(@RequestBody UserDeleteReq p) {
+    public ResultResponse<Integer> deleteUser(@ParameterObject @ModelAttribute UserDeleteReq p) {
         int result = userService.deleteUser(p);
         UserDeleteRes res = new UserDeleteRes();
         return ResultResponse.<Integer>builder()

@@ -105,20 +105,20 @@ public class UserService {
             }
         }
 
-        // 저장할 파일명(랜덤명 파일명) 생성
+        //저장할 파일명(랜덤명 파일명) 생성
         String savedPicName = (p.getPic() != null ? myFileUtils.makeRandomFileName(p.getPic()) : null);
         p.setPicName(savedPicName);
 
         if(p.getPic() != null) {
-            // 폴더 만들기
+            //폴더 생성
             String folderPath = String.format("user/%s", p.getUserId());
             myFileUtils.makeFolders(folderPath);
 
-            // 기존 파일 삭제
+            //기존 파일 삭제
             String deletePath = String.format("%s/user/%s", myFileUtils.getUploadPath(), p.getUserId());
             myFileUtils.deleteFolder(deletePath, false);
 
-            // 원하는 위치에 저장할 파일명으로 파일을 이동(transferTo)
+            //원하는 위치에 저장할 파일명으로 파일을 이동(transferTo)
             String userId = p.getUserId();
             String filePath = String.format("user/%s/%s", userId, savedPicName);
 
@@ -146,6 +146,7 @@ public class UserService {
             return 0;
         }
 
+        //구성요소들 삭제
         int deleteLikeComment = userMapper.delProjectLikeAndProjectComment(p);
         log.info("deleteLikeComment: {}", deleteLikeComment);
         int deleteSharedProject = userMapper.delSharedProject(p);
@@ -157,7 +158,12 @@ public class UserService {
         int deleteUser = userMapper.delUser(p);
         log.info("deleteUser: {}", deleteUser);
 
+        //사진 삭제 (폴더 삭제)
+        String deletePath = String.format("%s/user/%s", myFileUtils.getUploadPath(), p.getUserId());
+        myFileUtils.deleteFolder(deletePath, true);
+
         userDeleteRes.setMessage("회원삭제가 완료되었습니다.");
-        return deleteUser;
+        return 1;
     }
+    //데이터 내 정보로 할때 객체 선언하면 새로운거라서 다시 수정필요.
 }
