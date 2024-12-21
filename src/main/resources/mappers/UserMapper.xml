@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.green.mandarart.user.UserMapper">
+    <insert id="insUser">
+        INSERT INTO user
+          SET user_id = #{userId}
+            , upw = #{upw}
+            , nick_name = #{nickName}
+            , pic = #{pic}
+    </insert>
+
+    <select id="selUser">
+        SELECT user_id as userId
+             , nick_name as nickName
+             , upw
+             , pic
+        FROM user
+        WHERE userId = #{userId}
+        AND upw = #{upw}
+    </select>
+
+    <select id="selUserInfo">
+        SELECT user_id as userId, nick_name as nickName, pic
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
+
+</mapper>
