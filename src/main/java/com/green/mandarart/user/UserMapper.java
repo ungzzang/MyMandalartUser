@@ -8,5 +8,5 @@ public interface UserMapper {
     int insUser(UserSignUpReq p);
     UserSignInRes selUser(UserSignInReq p);
     UserInfoGetRes selUserInfo(UserInfoGetReq p);
-
+    int updUser(UserUpdateReq p);
 }

@@ -12,6 +12,7 @@
             , pic = #{pic}
     </insert>
 
+
     <select id="selUser">
         SELECT user_id as userId
              , nick_name as nickName
@@ -22,10 +23,28 @@
         AND upw = #{upw}
     </select>
 
+
     <select id="selUserInfo">
         SELECT user_id as userId, nick_name as nickName, pic
         FROM user
         WHERE user_id = #{userId}
     </select>
+
+
+    <update id="updUser">
+        UPDATE user
+        <set>
+            <if test=" newUpw != null and newUpw != '' ">
+                upw = #{newUpw}
+            </if>
+            <if test=" nickName != null and nickName != '' ">
+                , nick_name = #{nickName}
+            </if>
+            <if test="picName != null">
+                , pic = #{picName}
+            </if>
+        </set>
+        WHERE user_id = #{userId}
+    </update>
 
 </mapper>

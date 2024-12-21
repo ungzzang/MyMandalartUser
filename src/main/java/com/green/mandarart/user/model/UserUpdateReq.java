@@ -1,8 +1,10 @@
 package com.green.mandarart.user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -17,5 +19,9 @@ public class UserUpdateReq {
     private String checkUpw;
     @Schema(title = "바꿀닉네임", requiredMode = Schema.RequiredMode.REQUIRED)
     private String nickName;
-    private String pic;
+    @Schema(title = "프로필등록")
+    private MultipartFile pic;
+
+    @JsonIgnore
+    private String picName;
 }
