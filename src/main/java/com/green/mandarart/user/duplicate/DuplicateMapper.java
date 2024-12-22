@@ -6,6 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface DuplicateMapper {
-    DuplicateRes checkEmail(String p);
-    DuplicateRes checkNickName(String p);
+    DuplicateRes checkEmail(String userId);
+    DuplicateRes checkNickName(String nickName);
 }

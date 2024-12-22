@@ -72,15 +72,14 @@ public class UserService {
     //회원정보수정
     public int putUser(UserUpdateReq p){
         // 이메일, 비밀번호 일치 여부 확인
-        UserSignInRes res = new UserSignInRes();
-        UserUpdateRes userUpdateRes = new UserUpdateRes();
+        UserUpdateRes userUpdateRes = userMapper.selUser2(p); //*여기한번 검토*
 
-        if(p.getUserId() != res.getUserId()){
+        if(p.getUserId() != userUpdateRes.getUserId()){
             userUpdateRes.setMessage("이메일이 일치하지않습니다.");
             return 0;
         }
 
-        if(!BCrypt.checkpw(p.getUpw(), res.getUpw())){
+        if(!BCrypt.checkpw(p.getUpw(), userUpdateRes.getUpw())){
             userUpdateRes.setMessage("비밀번호가 일치하지않습니다.");
             return 0;
         }
@@ -96,7 +95,7 @@ public class UserService {
         }
 
         // 닉네임 바꿀시
-        if(p.getNickName() != null) {
+        if(p.getNickName() != null) { //*여기검토*
             DuplicateReq duplicateReq = new DuplicateReq();
             DuplicateRes duplicateRes = duplicateService.checkNickName(duplicateReq);
             if(duplicateRes != null){

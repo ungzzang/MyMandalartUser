@@ -23,6 +23,14 @@
         AND upw = #{upw}
     </select>
 
+    <select id="selUser2">
+        SELECT user_id as userId
+             , upw
+        FROM user
+        WHERE user_id = #{userId}
+        AND upw = #{upw}
+    </select>
+
 
     <select id="selUserInfo">
         SELECT user_id as userId, nick_name as nickName, pic
