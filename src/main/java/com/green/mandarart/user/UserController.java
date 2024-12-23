@@ -57,10 +57,10 @@ public class UserController {
                 .build();
     }
 
-    @PutMapping
+    @PatchMapping
     @Operation(summary = "유저정보수정")
-    public ResultResponse<Integer> putUser(@RequestBody UserUpdateReq p) {
-        int result = userService.putUser(p);
+    public ResultResponse<Integer> patchUser(@RequestBody UserUpdateReq p) {
+        int result = userService.patchUser(p);
 
         UserUpdateRes res = new UserUpdateRes();
         return ResultResponse.<Integer>builder()

@@ -12,7 +12,6 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.xml.crypto.dsig.SignedInfo;
 import java.io.IOException;
 
 @Slf4j
@@ -70,7 +69,7 @@ public class UserService {
     }
 
     //회원정보수정
-    public int putUser(UserUpdateReq p){
+    public int patchUser(UserUpdateReq p){
         // 이메일, 비밀번호 일치 여부 확인
         UserUpdateRes userUpdateRes = userMapper.selUser2(p); //*여기한번 검토*
 
@@ -97,6 +96,7 @@ public class UserService {
         // 닉네임 바꿀시
         if(p.getNickName() != null) { //*여기검토*
             DuplicateReq duplicateReq = new DuplicateReq();
+            duplicateReq.setNickName(p.getNickName());
             DuplicateRes duplicateRes = duplicateService.checkNickName(duplicateReq);
             if(duplicateRes != null){
                 userUpdateRes.setMessage("중복된 닉네임입니다.");

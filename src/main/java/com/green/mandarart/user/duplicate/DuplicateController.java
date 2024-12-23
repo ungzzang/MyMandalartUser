@@ -20,8 +20,8 @@ public class DuplicateController {
 
     //이메일 중복체크
     @GetMapping("checkEmail")
-    public ResultResponse<Integer> checkEmail(@ParameterObject @ModelAttribute DuplicateReq p){
-        DuplicateRes res = duplicateService.checkEmail(p);
+    public ResultResponse<Integer> emailChk(@ParameterObject @ModelAttribute DuplicateReq p){
+        DuplicateRes res = duplicateService.checkEmail(p.getUserId());
 
         return ResultResponse.<Integer>builder()
                 .resultMessage(res.getMessage())
@@ -31,8 +31,8 @@ public class DuplicateController {
 
     //닉네임 중복체크
     @GetMapping("checkNickName")
-    public ResultResponse<Integer> checkNickName(@ParameterObject @ModelAttribute DuplicateReq p) {
-        DuplicateRes res = duplicateService.checkNickName(p);
+    public ResultResponse<Integer> nickNameChk(@ParameterObject @ModelAttribute DuplicateReq p) {
+        DuplicateRes res = duplicateService.checkNickName(p.getNickName());
 
         return ResultResponse.<Integer>builder()
                 .resultMessage(res.getMessage())

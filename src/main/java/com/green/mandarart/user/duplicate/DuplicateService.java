@@ -13,8 +13,8 @@ public class DuplicateService {
     private final DuplicateMapper duplicateMapper;
 
     //이메일 중복체크
-    public DuplicateRes checkEmail(DuplicateReq p){
-        DuplicateRes res = duplicateMapper.checkEmail(p.getUserId());
+    public DuplicateRes checkEmail(String userId){
+        DuplicateRes res = duplicateMapper.checkEmail(userId);
 
         if(res == null){
             res.setCheck(1); //중복되는 이메일없을때
@@ -28,8 +28,8 @@ public class DuplicateService {
     }
 
     //닉네임 중복체크
-    public DuplicateRes checkNickName(DuplicateReq p){
-        DuplicateRes res = duplicateMapper.checkNickName(p.getNickName());
+    public DuplicateRes checkNickName(String nickName){
+        DuplicateRes res = duplicateMapper.checkNickName(nickName);
 
         if(res == null){
             res.setCheck(1); //중복되는 닉네임없을때
